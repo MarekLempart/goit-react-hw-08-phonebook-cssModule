@@ -1,70 +1,55 @@
 // ContactForm.jsx
 
-// Importowanie ikony PlusCircleOutlined z biblioteki @ant-design/icons
-import { PlusCircleOutlined } from '@ant-design/icons';
-// Importowanie hooka useState z React do zarządzania stanem komponentu
-import { useState } from 'react';
-// Importowanie hooków useDispatch i useSelector z react-redux do pobierania stanu z Redux store i wysyłania akcji
-import { useDispatch, useSelector } from 'react-redux';
-// Importowanie akcji addContact z pliku operations w folderze Contacts
-import { addContact } from '../../Redux/Contacts/operations';
-// Importowanie stylizowanych komponentów z pliku ContactForm.styled
 import {
-  AddModal,
-  AddModalBtn,
-  FormWrap,
-  InputForm,
-  OpenAddModal,
-  PhoneIcon,
-  UserIcon,
-} from './ContactForm.styled';
+  PhoneOutlined,
+  PlusCircleOutlined,
+  UserAddOutlined,
+} from '@ant-design/icons';
+import { Button, Form, Input, Modal } from 'antd';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../Redux/Contacts/operations';
+import styles from './ContactForm.module.css';
 
 export const ContactForm = () => {
-  const [open, setOpen] = useState(false); // Stan dla otwierania modala
-  const [form] = FormWrap.useForm(); // Pobieranie funkcji do zarządzania formularzem
-  const currentContacts = useSelector(state => state.contacts.items); // Pobieranie listy kontaktów z Redux store
-  const loader = useSelector(state => state.contacts.isLoading); // Pobieranie stanu ładowania z Redux store
-  const dispatch = useDispatch(); // Hook do wysyłania akcji do Redux store
+  const [open, setOpen] = useState(false);
+  const [form] = Form.useForm();
+  const currentContacts = useSelector(state => state.contacts.items);
+  const loader = useSelector(state => state.contacts.isLoading);
+  const dispatch = useDispatch();
 
-  // Funkcja do wyświetlania modala
   const showModal = () => {
-    form.resetFields(); // Czyszczenie formularza
-    setOpen(true); // Otwieranie modala
+    form.resetFields();
+    setOpen(true);
   };
 
-  // Funkcja do obsługi submit formularza
   const submit = value => {
-    // Funkcja do formatowania numeru telefonu
     const formatTel = () => {
-      const number = value.number; // Pobieranie numeru telefonu z wartości formularza
-      const phoneLength = number.length; // Długość numeru telefonu
+      const number = value.number;
+      const phoneLength = number.length;
 
-      // Sprawdzanie czy numer telefonu jest krótszy niż 7 cyfr
       if (phoneLength < 7) {
-        return `(${number.slice(0, 3)}) ${number.slice(3)}`; // Formatowanie numeru w przypadku krótszego niż 7 cyfr
+        return `(${number.slice(0, 3)}) ${number.slice(3)}`;
       }
 
-      // Formatowanie numeru w przypadku dłuższego niż 7 cyfr
       return `(${number.slice(0, 3)}) ${number.slice(3, 6)}-${number.slice(
         6,
         10
       )}`;
     };
 
-    const newContact = { name: value.name, number: formatTel() }; // Tworzenie nowego kontaktu
-    const newContactName = newContact.name.toLowerCase(); // Zamiana nazwy kontaktu na małe litery
+    const newContact = { name: value.name, number: formatTel() };
+    const newContactName = newContact.name.toLowerCase();
 
-    // Sprawdzanie czy kontakt o takiej nazwie już istnieje
     if (
       currentContacts.find(
         contact => contact.name.toLowerCase() === newContactName
       )
     ) {
-      alert(`${newContact.name} is already in contact`); // Wyświetlanie alertu jeśli kontakt już istnieje
+      alert(`${newContact.name} is already in contact`);
     } else {
-      dispatch(addContact(newContact)); // Wysyłanie akcji dodania nowego kontaktu do Redux store
+      dispatch(addContact(newContact));
 
-      // Jeśli kontakt został dodany, czyszczenie formularza i zamykanie modala
       if (!loader) {
         form.resetFields();
         setOpen(false);
@@ -74,33 +59,34 @@ export const ContactForm = () => {
 
   return (
     <>
-      {/* Przycisk do otwierania modala */}
-      <OpenAddModal
+      <Button
+        className={styles.openAddModal}
         type="primary"
         onClick={showModal}
         title="add new contact"
-        size={'large'} // Rozmiar przycisku
+        size="large"
       >
         <PlusCircleOutlined />
         Add contact
-      </OpenAddModal>
+      </Button>
 
-      {/* Modal do dodawania nowego kontaktu */}
-      <AddModal
+      <Modal
+        className={styles.addModal}
         footer={null}
         title="Add new contact"
         open={open}
-        onCancel={() => setOpen(false)} // Funkcja do zamykania modala
+        onCancel={() => setOpen(false)}
       >
-        <FormWrap
+        <Form
           form={form}
           name="normal_login"
           initialValues={{
             remember: true,
           }}
-          onFinish={submit} // Funkcja do obsługi submit formularza
+          onFinish={submit}
+          className={styles.formWrap}
         >
-          <FormWrap.Item
+          <Form.Item
             name="name"
             rules={[
               {
@@ -110,14 +96,15 @@ export const ContactForm = () => {
               },
             ]}
           >
-            <InputForm
-              prefix={<UserIcon />} // Ikona użytkownika
+            <Input
+              className={styles.inputForm}
+              prefix={<UserAddOutlined className={styles.userIcon} />}
               placeholder="Name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$" // Wzór do walidacji nazwy
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             />
-          </FormWrap.Item>
+          </Form.Item>
 
-          <FormWrap.Item
+          <Form.Item
             name="number"
             rules={[
               {
@@ -127,21 +114,26 @@ export const ContactForm = () => {
               },
             ]}
           >
-            <InputForm
-              prefix={<PhoneIcon />} // Ikona telefonu
+            <Input
+              className={styles.inputForm}
+              prefix={<PhoneOutlined className={styles.phoneIcon} />}
               type=""
               placeholder="Number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}" // Wzór do walidacji numeru telefonu
+              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             />
-          </FormWrap.Item>
+          </Form.Item>
 
-          <FormWrap.Item>
-            <AddModalBtn type="primary" htmlType="submit">
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.addModalBtn}
+            >
               Create contact
-            </AddModalBtn>
-          </FormWrap.Item>
-        </FormWrap>
-      </AddModal>
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 };

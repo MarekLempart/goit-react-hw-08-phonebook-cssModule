@@ -10,7 +10,7 @@
   height: 40px;
   width: 300px;
   border: 2px solid #000000;
-  background-color: #939191bc;
+  background-color: #92a1b0bc;
   border-radius: 7px;
   transition: box-shadow cubic-bezier(0.17, 0.67, 0.86, 0.57) 300ms;
 }
