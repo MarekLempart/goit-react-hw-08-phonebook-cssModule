@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { refreshUser } from '../Redux/Authorization/operations';
-import { GlobalStyle } from './GlobalStyle';
+import styles from './Global.module.css';
 import { Layout } from './Layout/Layout';
 import { PrivateRoute } from './PrivateRoute';
 import { RestrictedRoute } from './RestrictedRoute';
@@ -26,7 +26,7 @@ export const App = () => {
   const { isRefreshing } = useSelector(state => state.auth);
 
   return !isRefreshing ? (
-    <>
+    <div className={styles.app}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -42,7 +42,6 @@ export const App = () => {
               <RestrictedRoute redirectTo="/contacts" component={<Login />} />
             }
           />
-
           <Route
             path="/register"
             element={
@@ -52,13 +51,11 @@ export const App = () => {
               />
             }
           />
-
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
       <ToastContainer />
-      <GlobalStyle />
-    </>
+    </div>
   ) : (
     <Spiner />
   );
