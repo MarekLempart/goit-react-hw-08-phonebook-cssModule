@@ -52,8 +52,7 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.header`
-  padding-top: 5px;
-  height: 80px;
+  height: 70px;
   background-image: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.5),
