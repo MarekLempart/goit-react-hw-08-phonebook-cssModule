@@ -1,33 +1,33 @@
-import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 import {
+  ContactsOutlined,
+  HomeOutlined,
   IssuesCloseOutlined,
   LoginOutlined,
-  HomeOutlined,
-  ContactsOutlined,
 } from '@ant-design/icons';
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const Nav = styled.nav`
   display: flex;
   gap: 30px;
   justify-content: space-between;
-  height: 50px;
+  height: 80px;
   align-items: center;
 `;
 
 export const Link = styled(NavLink)`
   :nth-child(2n + 1) {
-    margin-right: 20px;
+    margin-right: 10px;
   }
   &.active {
     color: #3a97e8;
-    border-top: 2px solid #3a97e8;
+    border-top: 3px solid #3a97e8;
   }
   text-decoration: none;
   color: inherit;
   font-size: 18px;
   font-weight: 600;
-  padding: 11px 4px;
+  padding: 25px 20px;
 `;
 
 export const RegIcon = styled(IssuesCloseOutlined)`
@@ -49,4 +49,17 @@ export const ContactIcon = styled(ContactsOutlined)`
 export const Container = styled.div`
   padding: 0 15px;
   width: 1000px;
+`;
+
+export const Header = styled.header`
+  padding-top: 5px;
+  height: 80px;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.5),
+    rgba(190, 190, 190, 0.5)
+  );
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;

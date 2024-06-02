@@ -1,24 +1,14 @@
 // Register.jsx
 
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { register } from '../../Redux/Authorization/operations';
-import {
-  ContLabel,
-  Container,
-  FormReg,
-  InputPassword,
-  InputReg,
-  Label,
-  LinkToLog,
-  RegMail,
-  RegPassWord,
-  RegUser,
-  SubmitButton,
-  TitleReg,
-} from './Register.styled';
+import css from './Register.module.css';
 
 export default function Register() {
-  const [form] = FormReg.useForm();
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector(state => state.auth);
 
@@ -34,9 +24,9 @@ export default function Register() {
   };
 
   return (
-    <section>
-      <Container>
-        <FormReg
+    <section className={css.section}>
+      <div className={css.container}>
+        <Form
           form={form}
           name="register"
           onFinish={onFinish}
@@ -45,9 +35,10 @@ export default function Register() {
             prefix: '48',
           }}
           scrollToFirstError
+          className={css.formReg}
         >
-          <TitleReg>Register new user</TitleReg>
-          <Label
+          <h2 className={css.titleReg}>Register new user</h2>
+          <Form.Item
             name="name"
             label="Name"
             tooltip="What do you want others to call you?"
@@ -58,10 +49,14 @@ export default function Register() {
                 whitespace: true,
               },
             ]}
+            className={css.label}
           >
-            <InputReg prefix={<RegUser />} />
-          </Label>
-          <Label
+            <Input
+              prefix={<UserOutlined className={css.regUser} />}
+              className={css.inputReg}
+            />
+          </Form.Item>
+          <Form.Item
             name="email"
             label="E-mail"
             rules={[
@@ -74,10 +69,14 @@ export default function Register() {
                 message: 'Please input your E-mail!',
               },
             ]}
+            className={css.label}
           >
-            <InputReg prefix={<RegMail />} />
-          </Label>
-          <Label
+            <Input
+              prefix={<MailOutlined className={css.regMail} />}
+              className={css.inputReg}
+            />
+          </Form.Item>
+          <Form.Item
             name="password"
             label="Password"
             rules={[
@@ -87,14 +86,16 @@ export default function Register() {
               },
             ]}
             hasFeedback
+            className={css.label}
           >
-            <InputPassword
-              prefix={<RegPassWord />}
+            <Input.Password
+              prefix={<LockOutlined className={css.regPassword} />}
               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,}"
               title="Must contain at least one number and one uppercase and lowercase letter, and at least 7 or more characters"
+              className={css.inputPassword}
             />
-          </Label>
-          <Label
+          </Form.Item>
+          <Form.Item
             name="confirm"
             label="Confirm Password"
             dependencies={['password']}
@@ -118,21 +119,33 @@ export default function Register() {
                 },
               }),
             ]}
+            className={css.label}
           >
-            <InputPassword prefix={<RegPassWord />} />
-          </Label>
+            <Input.Password
+              prefix={<LockOutlined className={css.regPassword} />}
+              className={css.inputPassword}
+            />
+          </Form.Item>
 
-          <Label>
-            <SubmitButton type="primary" htmlType="submit">
+          <Form.Item className={css.label}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={css.submitButton}
+            >
               Register
-            </SubmitButton>
-            <ContLabel>
-              or <LinkToLog to="/login"> log in</LinkToLog>if you already have
-              an account
-            </ContLabel>
-          </Label>
-        </FormReg>
-      </Container>
+            </Button>
+            <div className={css.contLabel}>
+              or{' '}
+              <Link to="/login" className={css.linkToLog}>
+                {' '}
+                log in
+              </Link>{' '}
+              if you already have an account
+            </div>
+          </Form.Item>
+        </Form>
+      </div>
     </section>
   );
 }
