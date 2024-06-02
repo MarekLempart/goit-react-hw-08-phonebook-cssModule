@@ -17,7 +17,7 @@ export default function Login() {
   };
 
   return (
-    <section>
+    <section className={css.section}>
       <div className={css.container}>
         <Form
           form={form}

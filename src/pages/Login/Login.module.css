@@ -1,7 +1,5 @@
 /* Login.module.css */
 
-/* Login.module.css */
-
 .formWrap {
   width: 300px;
 }
@@ -42,4 +40,19 @@
   text-align: center;
   margin-bottom: 15px;
   color: #2e2d2dbc;
+}
+
+.section {
+  padding-top: 40px;
+  height: 40em;
+  background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.5),
+      rgba(23, 140, 190, 0.5)
+    ),
+    url('../../img/tapeta-filizanka-na-starych-ksiazkach-obok-bukietu-roz.webp');
+  /* border-radius: 1.1em; */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
